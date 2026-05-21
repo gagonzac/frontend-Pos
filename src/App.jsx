@@ -1,123 +1,71 @@
 function App() {
   return (
 
-    <div className="app">
+    <div className="container-fluid vh-100 d-flex flex-column p-0">
 
       {/* HEADER */}
-      <header className="header">
-        HEADER / TOPBAR
+      <header
+        className="
+          bg-primary
+          text-white
+          d-flex
+          align-items-center
+          justify-content-center
+        "
+        style={{ height: "70px" }}
+      >
+        <h3 className="m-0">
+          HEADER / TOPBAR/ Usando Bootstrap
+        </h3>
       </header>
 
-      {/* MAIN AREA */}
-      <div className="mainArea">
+      {/* MAIN */}
+      <div className="row flex-grow-1 m-0">
 
         {/* SIDEBAR */}
-        <aside className="sidebar">
-          SIDEBAR
+        <aside
+          className="
+            col-2
+            bg-dark
+            text-white
+            d-flex
+            align-items-center
+            justify-content-center
+          "
+        >
+          <h4>SIDEBAR</h4>
         </aside>
 
         {/* CONTENT */}
-        <main className="content">
-          CONTENIDO
+        <main
+          className="
+            col-10
+            bg-light
+            d-flex
+            align-items-center
+            justify-content-center
+          "
+        >
+          <h2 className="text-secondary">
+            CONTENIDO
+          </h2>
         </main>
 
       </div>
 
       {/* FOOTER */}
-      <footer className="footer">
+      <footer
+        className="
+          bg-black
+          text-white
+          d-flex
+          align-items-center
+          justify-content-center
+        "
+        style={{ height: "50px" }}
+      >
         FOOTER / STATUS BAR
       </footer>
-
-      {/* CSS */}
-      <style>
-        {`
-          *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-          }
-
-          body{
-            font-family:Arial, sans-serif;
-          }
-
-          .app{
-            display:flex;
-            flex-direction:column;
-            height:100vh;
-          }
-
-          /* HEADER */
-
-          .header{
-            height:70px;
-            background:#2563eb;
-            color:white;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            font-size:24px;
-            font-weight:bold;
-          }
-
-          /* MAIN */
-
-          .mainArea{
-            flex:1;
-            display:flex;
-          }
-
-          /* SIDEBAR */
-
-          .sidebar{
-            width:250px;
-            background:#1e293b;
-            color:white;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            font-size:22px;
-            font-weight:bold;
-          }
-
-          /* CONTENT */
-
-          .content{
-            flex:1;
-
-            background:#f1f5f9;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            font-size:28px;
-            font-weight:bold;
-
-            color:#334155;
-          }
-
-          /* FOOTER */
-
-          .footer{
-            height:50px;
-
-            background:#0f172a;
-
-            color:white;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            font-size:18px;
-          }
-        `}
-      </style>
 
     </div>
 
