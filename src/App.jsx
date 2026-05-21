@@ -11,39 +11,53 @@ function App() {
           d-flex
           align-items-center
           justify-content-center
+          flex-shrink-0
         "
         style={{ height: "70px" }}
       >
         <h3 className="m-0">
-          HEADER / TOPBAR/ Usando Bootstrap
+          HEADER / TOPBAR / Usando Bootstrap
         </h3>
       </header>
 
       {/* MAIN */}
-      <div className="row flex-grow-1 m-0">
+      <div className="d-flex flex-grow-1 overflow-hidden">
 
         {/* SIDEBAR */}
         <aside
           className="
-            col-2
             bg-dark
             text-white
             d-flex
             align-items-center
             justify-content-center
+            flex-shrink-0
           "
+          style={{
+            width: "250px",
+            minWidth: "250px",
+          }}
         >
-          <h4>SIDEBAR</h4>
+          <h4
+            className="m-0"
+            style={{
+              fontSize: "28px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            SIDEBAR
+          </h4>
         </aside>
 
         {/* CONTENT */}
         <main
           className="
-            col-10
+            flex-grow-1
             bg-light
             d-flex
             align-items-center
             justify-content-center
+            overflow-auto
           "
         >
           <h2 className="text-secondary">
@@ -61,6 +75,7 @@ function App() {
           d-flex
           align-items-center
           justify-content-center
+          flex-shrink-0
         "
         style={{ height: "50px" }}
       >
