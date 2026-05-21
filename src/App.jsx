@@ -10,14 +10,21 @@ function App() {
           text-white
           d-flex
           align-items-center
-          justify-content-center
+          justify-content-between
+          px-4
           flex-shrink-0
         "
         style={{ height: "70px" }}
       >
+
         <h3 className="m-0">
-          HEADER / TOPBAR / Usando Bootstrap
+          POS Profesional
         </h3>
+
+        <div>
+          Usuario Admin
+        </div>
+
       </header>
 
       {/* MAIN */}
@@ -29,24 +36,72 @@ function App() {
             bg-dark
             text-white
             d-flex
-            align-items-center
-            justify-content-center
+            flex-column
             flex-shrink-0
+            p-3
           "
           style={{
-            width: "250px",
-            minWidth: "250px",
+            width: "260px",
+            minWidth: "260px",
           }}
         >
-          <h4
-            className="m-0"
-            style={{
-              fontSize: "28px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            SIDEBAR
-          </h4>
+
+          {/* TITLE */}
+          <div className="mb-4">
+
+            <h4
+              className="m-0 fw-bold"
+              style={{
+                fontSize: "28px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              SIDEBAR
+            </h4>
+
+          </div>
+
+          {/* MENU */}
+          <nav className="d-flex flex-column gap-2">
+
+            <button className="btn btn-dark text-start border border-secondary">
+              🏠 Dashboard
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              🛒 Punto de Venta
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              📦 Productos
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              👥 Clientes
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              🚚 Proveedores
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              💰 Caja
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              📈 Reportes
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              👨‍💼 Usuarios
+            </button>
+
+            <button className="btn btn-dark text-start border border-secondary">
+              ⚙️ Configuración
+            </button>
+
+          </nav>
+
         </aside>
 
         {/* CONTENT */}
@@ -60,9 +115,11 @@ function App() {
             overflow-auto
           "
         >
+
           <h2 className="text-secondary">
             CONTENIDO
           </h2>
+
         </main>
 
       </div>
@@ -74,12 +131,21 @@ function App() {
           text-white
           d-flex
           align-items-center
-          justify-content-center
+          justify-content-between
+          px-4
           flex-shrink-0
         "
         style={{ height: "50px" }}
       >
-        FOOTER / STATUS BAR
+
+        <span>
+          FOOTER / STATUS BAR
+        </span>
+
+        <span>
+          Sistema POS Online
+        </span>
+
       </footer>
 
     </div>
