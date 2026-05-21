@@ -7,10 +7,7 @@ function Sidebar() {
       style={{ width: "260px", minWidth: "260px" }}
     >
       <div className="mb-4">
-        <h4
-          className="m-0 fw-bold"
-          style={{ fontSize: "28px", whiteSpace: "nowrap" }}
-        >
+        <h4 className="m-0 fw-bold" style={{ fontSize: "28px" }}>
           SIDEBAR
         </h4>
       </div>
@@ -134,8 +131,6 @@ function Sidebar() {
         </SidebarItem>
 
       </nav>
-
-  
     </aside>
   );
 }
