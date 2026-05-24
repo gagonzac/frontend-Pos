@@ -96,10 +96,8 @@ function MainContent() {
     setSelectedProduct(product);
     setQty(1);
 
-    // guardar historial visual
     setSelectedHistory((prev) => {
 
-      // evitar duplicados consecutivos
       const exists = prev.find((p) => p.id === product.id);
 
       if (exists) return prev;
@@ -126,7 +124,7 @@ function MainContent() {
     setQty(1);
   };
 
-  // ELIMINAR DEL CARRITO
+  // ELIMINAR CARRITO
   const handleRemove = (index) => {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
@@ -143,10 +141,11 @@ function MainContent() {
 
       {/* LEFT */}
       <div
-        className="d-flex flex-column border-end bg-white"
+        className="d-flex flex-column border-end bg-white flex-shrink-0"
         style={{
           width: "60%",
-          minWidth: "300px",
+          minWidth: "60%",
+          maxWidth: "60%",
         }}
       >
 
@@ -187,6 +186,7 @@ function MainContent() {
                 >
 
                   <thead className="table-dark">
+
                     <tr>
                       <th className="py-1">Producto</th>
                       <th className="py-1">Precio</th>
@@ -194,6 +194,7 @@ function MainContent() {
                       <th className="py-1">Subtotal</th>
                       <th className="py-1"></th>
                     </tr>
+
                   </thead>
 
                   <tbody>
@@ -279,51 +280,69 @@ function MainContent() {
       </div>
 
       {/* RIGHT */}
-      <div className="d-flex flex-column flex-grow-1 bg-light">
+      <div
+        className="d-flex flex-column bg-light flex-shrink-0"
+        style={{
+          width: "40%",
+          minWidth: "40%",
+          maxWidth: "40%",
+        }}
+      >
 
         {/* RIGHT TOP */}
         <div
-          style={{ flex: 0.65 }}
           className="d-flex flex-column border-bottom"
+          style={{
+            height: "420px",
+            minHeight: "420px",
+            maxHeight: "420px",
+          }}
         >
 
           {/* PANEL 1 */}
           <div
-            className="flex-grow-1 p-2 border-bottom overflow-auto bg-white"
+            className="p-2 border-bottom bg-white"
+            style={{
+              height: "130px",
+              minHeight: "130px",
+              maxHeight: "130px",
+            }}
           >
 
             <div className="card h-100 shadow-sm border-secondary">
 
               <div
-                className="card-header bg-success text-white py-2"
+                className="card-header bg-success text-white py-1"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: "600",
                 }}
               >
                 Producto Seleccionado
               </div>
 
-              <div className="card-body p-2 overflow-auto">
+              <div className="card-body p-2 overflow-hidden">
 
                 {selectedProduct ? (
 
                   <table
                     className="table table-sm align-middle mb-0"
                     style={{
-                      fontSize: "11px",
+                      fontSize: "10px",
                       border: "1px solid #dee2e6",
                     }}
                   >
 
                     <thead className="table-dark">
+
                       <tr>
-                        <th className="py-1">Producto</th>
-                        <th className="py-1">Precio</th>
-                        <th className="py-1">Qty/Kg</th>
-                        <th className="py-1">Subtotal</th>
-                        <th className="py-1"></th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th></th>
                       </tr>
+
                     </thead>
 
                     <tbody>
@@ -336,7 +355,7 @@ function MainContent() {
                           ${selectedProduct.price}
                         </td>
 
-                        <td style={{ width: "90px" }}>
+                        <td style={{ width: "70px" }}>
 
                           <input
                             type="number"
@@ -347,8 +366,9 @@ function MainContent() {
                               setQty(Number(e.target.value))
                             }
                             style={{
-                              fontSize: "11px",
-                              padding: "2px 4px",
+                              fontSize: "10px",
+                              padding: "1px 3px",
+                              height: "24px",
                             }}
                           />
 
@@ -396,22 +416,17 @@ function MainContent() {
 
           </div>
 
-          {/* PANEL 2 - HISTORIAL VISUAL */}
+          {/* PANEL 2 */}
           <div
-            className="p-2 overflow-auto bg-light"
-            style={{
-              height: "220px",
-              minHeight: "220px",
-              maxHeight: "220px",
-            }}
+            className="p-2 overflow-hidden bg-light flex-grow-1"
           >
 
             <div className="card h-100 shadow-sm border-secondary d-flex flex-column">
 
               <div
-                className="card-header bg-info text-white py-2"
+                className="card-header bg-info text-white py-1"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: "600",
                 }}
               >
@@ -422,20 +437,27 @@ function MainContent() {
                 className="card-body overflow-auto"
               >
 
-                <div className="row g-2">
+                <div className="row g-1">
 
                   {selectedHistory.map((product) => (
 
                     <div
                       key={product.id}
-                      className="col-6"
+                      className="col-4"
                     >
 
                       <div
-                        className="card border h-100"
+                        className={`card border h-100 ${
+                          selectedProduct?.id === product.id
+                            ? "border-primary border-2"
+                            : ""
+                        }`}
                         style={{
-                          fontSize: "10px",
+                          fontSize: "9px",
+                          cursor: "pointer",
+                          transition: "0.2s",
                         }}
+                        onClick={() => handleSelect(product)}
                       >
 
                         <img
@@ -443,23 +465,28 @@ function MainContent() {
                           alt={product.name}
                           className="card-img-top"
                           style={{
-                            height: "70px",
+                            height: "35px",
                             objectFit: "cover",
                           }}
                         />
 
-                        <div className="card-body p-2">
+                        <div className="card-body p-1">
 
                           <div
-                            className="fw-bold"
+                            className="fw-bold text-truncate"
                             style={{
-                              fontSize: "10px",
+                              fontSize: "9px",
                             }}
                           >
                             {product.name}
                           </div>
 
-                          <div className="text-success">
+                          <div
+                            className="text-success"
+                            style={{
+                              fontSize: "9px",
+                            }}
+                          >
                             ${product.price.toLocaleString()}
                           </div>
 
@@ -483,8 +510,7 @@ function MainContent() {
 
         {/* RIGHT BOTTOM */}
         <div
-          style={{ flex: 0.35 }}
-          className="p-2 overflow-auto"
+          className="p-2 overflow-auto flex-grow-1"
         >
 
           <div className="card h-100 shadow-sm border-secondary d-flex flex-column">
