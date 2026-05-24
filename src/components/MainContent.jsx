@@ -5,7 +5,7 @@ function MainContent() {
   // PRODUCTOS
   const products = [
     {
-      id: 1,
+      code: "FRU-001",
       name: "Manzanas",
       price: 1200,
       stock: 20,
@@ -13,7 +13,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=400",
     },
     {
-      id: 2,
+      code: "FRU-002",
       name: "Plátanos",
       price: 950,
       stock: 35,
@@ -21,7 +21,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1574226516831-e1dff420e37f?q=80&w=400",
     },
     {
-      id: 3,
+      code: "FRU-003",
       name: "Naranjas",
       price: 1400,
       stock: 18,
@@ -29,7 +29,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=400",
     },
     {
-      id: 4,
+      code: "VER-001",
       name: "Tomates",
       price: 1100,
       stock: 42,
@@ -37,7 +37,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?q=80&w=400",
     },
     {
-      id: 5,
+      code: "VER-002",
       name: "Lechuga",
       price: 800,
       stock: 25,
@@ -45,7 +45,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?q=80&w=400",
     },
     {
-      id: 6,
+      code: "VER-003",
       name: "Papas",
       price: 700,
       stock: 60,
@@ -53,7 +53,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=400",
     },
     {
-      id: 7,
+      code: "VER-004",
       name: "Cebollas",
       price: 650,
       stock: 33,
@@ -61,7 +61,7 @@ function MainContent() {
         "https://images.unsplash.com/photo-1508747703725-719777637510?q=80&w=400",
     },
     {
-      id: 8,
+      code: "VER-005",
       name: "Zanahorias",
       price: 990,
       stock: 27,
@@ -83,7 +83,8 @@ function MainContent() {
 
   // FILTRO
   const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    p.code.toLowerCase().includes(search.toLowerCase())
   );
 
   // SUBTOTAL
@@ -98,7 +99,9 @@ function MainContent() {
 
     setSelectedHistory((prev) => {
 
-      const exists = prev.find((p) => p.id === product.id);
+      const exists = prev.find(
+        (p) => p.code === product.code
+      );
 
       if (exists) return prev;
 
@@ -188,11 +191,12 @@ function MainContent() {
                   <thead className="table-dark">
 
                     <tr>
-                      <th className="py-1">Producto</th>
-                      <th className="py-1">Precio</th>
-                      <th className="py-1">Qty/Kg</th>
-                      <th className="py-1">Subtotal</th>
-                      <th className="py-1"></th>
+                      <th>Código</th>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                      <th>Qty/Kg</th>
+                      <th>Subtotal</th>
+                      <th></th>
                     </tr>
 
                   </thead>
@@ -203,6 +207,7 @@ function MainContent() {
 
                       <tr key={index}>
 
+                        <td>{item.code}</td>
                         <td>{item.name}</td>
                         <td>${item.price}</td>
                         <td>{item.qty}</td>
@@ -325,82 +330,94 @@ function MainContent() {
 
                 {selectedProduct ? (
 
-                  <table
-                    className="table table-sm align-middle mb-0"
-                    style={{
-                      fontSize: "10px",
-                      border: "1px solid #dee2e6",
-                    }}
-                  >
+                  <>
+                    {/* CÓDIGO SOBRE EL PRODUCTO */}
+                    <div
+                      className="mb-2 fw-bold text-primary"
+                      style={{
+                        fontSize: "11px",
+                      }}
+                    >
+                      Código: {selectedProduct.code}
+                    </div>
 
-                    <thead className="table-dark">
+                    <table
+                      className="table table-sm align-middle mb-0"
+                      style={{
+                        fontSize: "10px",
+                        border: "1px solid #dee2e6",
+                      }}
+                    >
 
-                      <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Qty</th>
-                        <th>Subtotal</th>
-                        <th></th>
-                      </tr>
+                      <thead className="table-dark">
 
-                    </thead>
+                        <tr>
+                          <th>Producto</th>
+                          <th>Precio</th>
+                          <th>Qty</th>
+                          <th>Subtotal</th>
+                          <th></th>
+                        </tr>
 
-                    <tbody>
+                      </thead>
 
-                      <tr>
+                      <tbody>
 
-                        <td>{selectedProduct.name}</td>
+                        <tr>
 
-                        <td>
-                          ${selectedProduct.price}
-                        </td>
+                          <td>{selectedProduct.name}</td>
 
-                        <td style={{ width: "70px" }}>
+                          <td>
+                            ${selectedProduct.price}
+                          </td>
 
-                          <input
-                            type="number"
-                            className="form-control form-control-sm"
-                            value={qty}
-                            min={1}
-                            onChange={(e) =>
-                              setQty(Number(e.target.value))
-                            }
-                            style={{
-                              fontSize: "10px",
-                              padding: "1px 3px",
-                              height: "24px",
-                            }}
-                          />
+                          <td style={{ width: "70px" }}>
 
-                        </td>
+                            <input
+                              type="number"
+                              className="form-control form-control-sm"
+                              value={qty}
+                              min={1}
+                              onChange={(e) =>
+                                setQty(Number(e.target.value))
+                              }
+                              style={{
+                                fontSize: "10px",
+                                padding: "1px 3px",
+                                height: "24px",
+                              }}
+                            />
 
-                        <td>
-                          ${subtotal.toLocaleString()}
-                        </td>
+                          </td>
 
-                        <td className="text-end">
+                          <td>
+                            ${subtotal.toLocaleString()}
+                          </td>
 
-                          <button
-                            className="btn btn-success btn-sm py-0 px-2 me-1"
-                            onClick={handleAddToCart}
-                          >
-                            ✔
-                          </button>
+                          <td className="text-end">
 
-                          <button
-                            className="btn btn-danger btn-sm py-0 px-2"
-                            onClick={() => setSelectedProduct(null)}
-                          >
-                            ✖
-                          </button>
+                            <button
+                              className="btn btn-success btn-sm py-0 px-2 me-1"
+                              onClick={handleAddToCart}
+                            >
+                              ✔
+                            </button>
 
-                        </td>
+                            <button
+                              className="btn btn-danger btn-sm py-0 px-2"
+                              onClick={() => setSelectedProduct(null)}
+                            >
+                              ✖
+                            </button>
 
-                      </tr>
+                          </td>
 
-                    </tbody>
+                        </tr>
 
-                  </table>
+                      </tbody>
+
+                    </table>
+                  </>
 
                 ) : (
 
@@ -433,22 +450,20 @@ function MainContent() {
                 Panel Secundario
               </div>
 
-              <div
-                className="card-body overflow-auto"
-              >
+              <div className="card-body overflow-auto">
 
                 <div className="row g-1">
 
                   {selectedHistory.map((product) => (
 
                     <div
-                      key={product.id}
+                      key={product.code}
                       className="col-4"
                     >
 
                       <div
                         className={`card border h-100 ${
-                          selectedProduct?.id === product.id
+                          selectedProduct?.code === product.code
                             ? "border-primary border-2"
                             : ""
                         }`}
@@ -479,6 +494,15 @@ function MainContent() {
                             }}
                           >
                             {product.name}
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "8px",
+                              color: "#6c757d",
+                            }}
+                          >
+                            {product.code}
                           </div>
 
                           <div
@@ -521,7 +545,7 @@ function MainContent() {
               <input
                 type="text"
                 className="form-control form-control-sm"
-                placeholder="Buscar producto..."
+                placeholder="Buscar producto o código..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 style={{
@@ -545,10 +569,10 @@ function MainContent() {
                 <thead className="table-dark">
 
                   <tr>
-                    <th className="py-1">ID</th>
-                    <th className="py-1">Producto</th>
-                    <th className="py-1">Precio</th>
-                    <th className="py-1">Stock</th>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
                   </tr>
 
                 </thead>
@@ -558,12 +582,12 @@ function MainContent() {
                   {filteredProducts.map((p) => (
 
                     <tr
-                      key={p.id}
+                      key={p.code}
                       style={{ cursor: "pointer" }}
                       onClick={() => handleSelect(p)}
                     >
 
-                      <td>{p.id}</td>
+                      <td>{p.code}</td>
                       <td>{p.name}</td>
                       <td>${p.price}</td>
                       <td>{p.stock}</td>
