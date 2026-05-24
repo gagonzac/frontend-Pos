@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function MainContent() {
+
+  // INPUT REF
+  const searchInputRef = useRef(null);
 
   // PRODUCTOS
   const products = [
     {
       code: "FRU-001",
+      barcode: "8699009442892",
       name: "Manzanas",
       price: 1200,
       stock: 20,
@@ -14,6 +18,7 @@ function MainContent() {
     },
     {
       code: "FRU-002",
+      barcode: "8699009442908",
       name: "Plátanos",
       price: 950,
       stock: 35,
@@ -22,6 +27,7 @@ function MainContent() {
     },
     {
       code: "FRU-003",
+      barcode: "8699009442915",
       name: "Naranjas",
       price: 1400,
       stock: 18,
@@ -30,6 +36,7 @@ function MainContent() {
     },
     {
       code: "VER-001",
+      barcode: "8699009442922",
       name: "Tomates",
       price: 1100,
       stock: 42,
@@ -38,6 +45,7 @@ function MainContent() {
     },
     {
       code: "VER-002",
+      barcode: "8699009442939",
       name: "Lechuga",
       price: 800,
       stock: 25,
@@ -46,6 +54,7 @@ function MainContent() {
     },
     {
       code: "VER-003",
+      barcode: "8699009442946",
       name: "Papas",
       price: 700,
       stock: 60,
@@ -54,6 +63,7 @@ function MainContent() {
     },
     {
       code: "VER-004",
+      barcode: "8699009442953",
       name: "Cebollas",
       price: 650,
       stock: 33,
@@ -62,11 +72,12 @@ function MainContent() {
     },
     {
       code: "VER-005",
+      barcode: "8699009442960",
       name: "Zanahorias",
       price: 990,
       stock: 27,
       image:
-        "https://images.unsplash.com/photo-1447175008436-054170c2e979?q=80&w=400",
+        "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=400",
     },
   ];
 
@@ -78,14 +89,37 @@ function MainContent() {
   // CARRITO
   const [cart, setCart] = useState([]);
 
-  // HISTORIAL VISUAL
+  // HISTORIAL
   const [selectedHistory, setSelectedHistory] = useState([]);
 
+  // ENFOCAR INPUT SIEMPRE
+  const focusSearchInput = () => {
+
+    setTimeout(() => {
+
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+
+    }, 50);
+  };
+
+  // AL CARGAR
+  useEffect(() => {
+    focusSearchInput();
+  }, []);
+
   // FILTRO
-  const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.code.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredProducts = products.filter((p) => {
+
+    const value = search.toLowerCase();
+
+    return (
+      p.name.toLowerCase().includes(value) ||
+      p.code.toLowerCase().includes(value) ||
+      p.barcode.includes(value)
+    );
+  });
 
   // SUBTOTAL
   const subtotal =
@@ -107,6 +141,28 @@ function MainContent() {
 
       return [...prev, product];
     });
+
+    focusSearchInput();
+  };
+
+  // ENTER DESDE BÚSQUEDA
+  const handleSearchKeyDown = (e) => {
+
+    if (e.key === "Enter") {
+
+      e.preventDefault();
+
+      // SI SOLO EXISTE UN PRODUCTO
+      if (filteredProducts.length === 1) {
+
+        handleSelect(filteredProducts[0]);
+      }
+
+      // LIMPIAR INPUT
+      setSearch("");
+
+      focusSearchInput();
+    }
   };
 
   // AGREGAR AL CARRITO
@@ -125,11 +181,18 @@ function MainContent() {
 
     setSelectedProduct(null);
     setQty(1);
+
+    focusSearchInput();
   };
 
-  // ELIMINAR CARRITO
+  // ELIMINAR PRODUCTO
   const handleRemove = (index) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
+
+    setCart((prev) =>
+      prev.filter((_, i) => i !== index)
+    );
+
+    focusSearchInput();
   };
 
   return (
@@ -211,13 +274,19 @@ function MainContent() {
                         <td>{item.name}</td>
                         <td>${item.price}</td>
                         <td>{item.qty}</td>
-                        <td>${item.subtotal}</td>
+
+                        <td>
+                          $
+                          {item.subtotal.toLocaleString()}
+                        </td>
 
                         <td className="text-end">
 
                           <button
                             className="btn btn-danger btn-sm py-0 px-2"
-                            onClick={() => handleRemove(index)}
+                            onClick={() =>
+                              handleRemove(index)
+                            }
                           >
                             ✖
                           </button>
@@ -261,19 +330,30 @@ function MainContent() {
             <div className="card-body">
 
               <div className="d-flex justify-content-between mb-2">
+
                 <span>Total Productos:</span>
-                <strong>{cart.length}</strong>
+
+                <strong>
+                  {cart.length}
+                </strong>
+
               </div>
 
               <div className="d-flex justify-content-between">
+
                 <span>Total:</span>
 
                 <strong>
                   $
                   {cart
-                    .reduce((acc, item) => acc + item.subtotal, 0)
+                    .reduce(
+                      (acc, item) =>
+                        acc + item.subtotal,
+                      0
+                    )
                     .toLocaleString()}
                 </strong>
+
               </div>
 
             </div>
@@ -304,7 +384,7 @@ function MainContent() {
           }}
         >
 
-          {/* PANEL 1 */}
+          {/* PRODUCTO SELECCIONADO */}
           <div
             className="p-2 border-bottom bg-white"
             style={{
@@ -331,7 +411,6 @@ function MainContent() {
                 {selectedProduct ? (
 
                   <>
-                    {/* CÓDIGO SOBRE EL PRODUCTO */}
                     <div
                       className="mb-2 fw-bold text-primary"
                       style={{
@@ -365,13 +444,20 @@ function MainContent() {
 
                         <tr>
 
-                          <td>{selectedProduct.name}</td>
-
                           <td>
-                            ${selectedProduct.price}
+                            {selectedProduct.name}
                           </td>
 
-                          <td style={{ width: "70px" }}>
+                          <td>
+                            $
+                            {selectedProduct.price}
+                          </td>
+
+                          <td
+                            style={{
+                              width: "70px",
+                            }}
+                          >
 
                             <input
                               type="number"
@@ -379,7 +465,9 @@ function MainContent() {
                               value={qty}
                               min={1}
                               onChange={(e) =>
-                                setQty(Number(e.target.value))
+                                setQty(
+                                  Number(e.target.value)
+                                )
                               }
                               style={{
                                 fontSize: "10px",
@@ -391,7 +479,8 @@ function MainContent() {
                           </td>
 
                           <td>
-                            ${subtotal.toLocaleString()}
+                            $
+                            {subtotal.toLocaleString()}
                           </td>
 
                           <td className="text-end">
@@ -405,7 +494,10 @@ function MainContent() {
 
                             <button
                               className="btn btn-danger btn-sm py-0 px-2"
-                              onClick={() => setSelectedProduct(null)}
+                              onClick={() => {
+                                setSelectedProduct(null);
+                                focusSearchInput();
+                              }}
                             >
                               ✖
                             </button>
@@ -422,7 +514,7 @@ function MainContent() {
                 ) : (
 
                   <div className="text-muted">
-                    Selecciona un producto
+                    Escanea o selecciona un producto
                   </div>
 
                 )}
@@ -433,7 +525,7 @@ function MainContent() {
 
           </div>
 
-          {/* PANEL 2 */}
+          {/* PANEL SECUNDARIO */}
           <div
             className="p-2 overflow-hidden bg-light flex-grow-1"
           >
@@ -463,7 +555,8 @@ function MainContent() {
 
                       <div
                         className={`card border h-100 ${
-                          selectedProduct?.code === product.code
+                          selectedProduct?.code ===
+                          product.code
                             ? "border-primary border-2"
                             : ""
                         }`}
@@ -472,7 +565,9 @@ function MainContent() {
                           cursor: "pointer",
                           transition: "0.2s",
                         }}
-                        onClick={() => handleSelect(product)}
+                        onClick={() =>
+                          handleSelect(product)
+                        }
                       >
 
                         <img
@@ -511,7 +606,8 @@ function MainContent() {
                               fontSize: "9px",
                             }}
                           >
-                            ${product.price.toLocaleString()}
+                            $
+                            {product.price.toLocaleString()}
                           </div>
 
                         </div>
@@ -539,15 +635,19 @@ function MainContent() {
 
           <div className="card h-100 shadow-sm border-secondary d-flex flex-column">
 
-            {/* SEARCH */}
+            {/* BUSCADOR */}
             <div className="card-header bg-dark py-2">
 
               <input
+                ref={searchInputRef}
                 type="text"
                 className="form-control form-control-sm"
-                placeholder="Buscar producto o código..."
+                placeholder="Escanear código o buscar producto..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                onKeyDown={handleSearchKeyDown}
                 style={{
                   fontSize: "11px",
                 }}
@@ -555,7 +655,7 @@ function MainContent() {
 
             </div>
 
-            {/* TABLE */}
+            {/* TABLA */}
             <div className="card-body p-2 overflow-auto">
 
               <table
@@ -570,6 +670,7 @@ function MainContent() {
 
                   <tr>
                     <th>Código</th>
+                    <th>Barcode</th>
                     <th>Producto</th>
                     <th>Precio</th>
                     <th>Stock</th>
@@ -583,11 +684,16 @@ function MainContent() {
 
                     <tr
                       key={p.code}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleSelect(p)}
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handleSelect(p)
+                      }
                     >
 
                       <td>{p.code}</td>
+                      <td>{p.barcode}</td>
                       <td>{p.name}</td>
                       <td>${p.price}</td>
                       <td>{p.stock}</td>
